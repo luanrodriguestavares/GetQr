@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Printer, Download, Copy } from 'lucide-react';
 import 'animate.css';
-import * as XLSX from 'xlsx'; // Importe a biblioteca xlsx
+import * as XLSX from 'xlsx'; 
 
 interface Tooltip {
     id: string;
@@ -15,7 +15,7 @@ const tooltips: Tooltip[] = [
 ];
 
 interface SpeedDialProps {
-    tableData: any[]; // Defina o tipo correto para seus dados da tabela
+    tableData: any[]; 
 }
 
 const SpeedDial: React.FC<SpeedDialProps> = ({ tableData }) => {

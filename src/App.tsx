@@ -9,8 +9,11 @@ import CodeData from './components/codedata';
 function App() {
   const [scannedCodes, setScannedCodes] = useState<CodeData[]>([]);
   
-  const tableData: any[] = [
-  ];
+  // Dados da tabela para serem passados para o SpeedDial
+  const tableData: any[] = scannedCodes.map(codeData => ({
+    code: codeData.code,
+    date: codeData.date
+  }));
 
   const handleScan = (codeData: CodeData) => {
       setScannedCodes(prevCodes => [...prevCodes, codeData]);
