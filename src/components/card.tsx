@@ -1,7 +1,7 @@
+// Card.tsx
 import { useState, useRef } from 'react';
 import { Camera } from 'lucide-react';
 import { BrowserMultiFormatReader } from '@zxing/library';
-import TableQr from './table'
 
 interface CodeData {
     code: string;
@@ -10,7 +10,7 @@ interface CodeData {
 }
 
 function Card() {
-    const [scannedCodes, setScannedCodes] = useState<CodeData[]>([]); // Estado para armazenar os códigos escaneados
+    const [scannedCodes, setScannedCodes] = useState<CodeData[]>([]);
     const [result, setResult] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,14 +19,14 @@ function Card() {
         setIsModalOpen(true);
 
         const codeReader = new BrowserMultiFormatReader();
-        codeReader.decodeFromVideoDevice(null, videoRef.current, (result, error) => {
+        codeReader.decodeFromVideoDevice(null, videoRef.current!, (result, error) => {
             if (result) {
                 const scannedCode: CodeData = {
-                    code: result.getText(), // Armazene o código lido
-                    value: 'Valor', // Substitua 'Valor' pelo valor que deseja associar ao código
-                    date: new Date().toLocaleString() // Armazene a data atual
+                    code: result.getText(),
+                    value: 'Valor', // Defina o valor conforme necessário
+                    date: new Date().toLocaleString()
                 };
-                setScannedCodes(prevScannedCodes => [...prevScannedCodes, scannedCode]); // Adicione o código à lista de códigos escaneados
+                setScannedCodes(prevScannedCodes => [...prevScannedCodes, scannedCode]);
                 setResult(result.getText());
                 codeReader.stopContinuousDecode();
             }
@@ -62,14 +62,12 @@ function Card() {
             {isModalOpen && (
                 <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-4 rounded-lg">
+                        {/* Exibir o preview da câmera dentro do modal */}
                         <video ref={videoRef}></video>
                         <button onClick={closeModal}>Close</button>
                     </div>
                 </div>
             )}
-
-            {/* Renderize o componente de tabela e passe a lista de códigos escaneados como uma propriedade */}
-            <TableQr scannedCodes={scannedCodes} />
         </div>
     );
 }
