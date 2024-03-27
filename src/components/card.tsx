@@ -54,7 +54,7 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
             {isModalOpen && (
                 <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-4 rounded-lg">
-                        <video ref={videoRef}></video>
+                        <video ref={videoRef} autoPlay={true} playsInline={true}></video>
                         <button onClick={closeModal}>Close</button>
                     </div>
                 </div>
