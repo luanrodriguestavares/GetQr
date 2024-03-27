@@ -1,4 +1,3 @@
-// TableQr.tsx
 import React from 'react';
 import CodeData from './codedata';
 
@@ -8,20 +7,27 @@ interface TableQrProps {
 
 const TableQr: React.FC<TableQrProps> = ({ scannedCodes }) => {
     return (
-        <div className="table-container">
-            <table className="qr-table">
-                <thead>
+        <div className="max-w-full overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left rtl:text-right text-zinc-500 dark:text-gray-400 divide-y divide-gray-200">
+                <thead className="bg-indigo-600 text-xs text-white uppercase">
                     <tr>
-                        <th>Code</th>
-                        <th>Value</th>
-                        <th>Date</th>
+                        <th scope="col" className="px-6 py-3">
+                            Code
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Value
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Date
+                        </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="bg-white divide-y divide-gray-200">
                     {scannedCodes.map((codeData, index) => (
-                        <tr key={index}>
-                            <td>{codeData.code}</td>
-                            <td>{codeData.value}</td>
+                        <tr key={index} className="hover:bg-gray-50">
+                            <td className="px-6 py-4">{codeData.code}</td>
+                            <td className="px-6 py-4">{codeData.value}</td>
+                            <td className="px-6 py-4">{codeData.date}</td>
                         </tr>
                     ))}
                 </tbody>
