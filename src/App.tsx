@@ -8,6 +8,9 @@ import CodeData from './components/codedata';
 
 function App() {
   const [scannedCodes, setScannedCodes] = useState<CodeData[]>([]);
+  
+  const tableData: any[] = [
+  ];
 
   const handleScan = (codeData: CodeData) => {
       setScannedCodes(prevCodes => [...prevCodes, codeData]);
@@ -19,7 +22,7 @@ function App() {
           <div className="mx-3">
               <Card onScan={handleScan} />
               <TableQr scannedCodes={scannedCodes} />
-              <SpeedDial />
+              <SpeedDial tableData={tableData} />
           </div>
       </>
   );
