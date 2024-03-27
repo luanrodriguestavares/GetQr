@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Camera } from 'lucide-react';
+import { Camera, X } from 'lucide-react';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import CodeData from './codedata';
 
@@ -62,10 +62,12 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
             </div>
 
             {isModalOpen && (
-                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-4 rounded-lg">
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white p-3 rounded-md">
+                        <div className="flex justify-end">
+                            <button className="rounded-full bg-rose-700 text-zinc-200 p-1" onClick={closeModal}><X></X></button>
+                        </div>
                         <video ref={videoRef} autoPlay={true} playsInline={true}></video>
-                        <button onClick={closeModal}>Close</button>
                     </div>
                 </div>
             )}
