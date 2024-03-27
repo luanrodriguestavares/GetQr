@@ -1,26 +1,18 @@
-import './App.css'
-import Header from './components/header'
-import Card from './components/card'
-import SpeedDial from './components/speeddial'
-
+import './App.css';
+import Header from './components/header';
+import Card from './components/card';
+import TableQr from './components/table';
 
 function App() {
-
   return (
     <>
-    <Header></Header>
-    <div className="mx-3">
-      <Card></Card>
-      <SpeedDial></SpeedDial>
-    </div>
-
-      
-
-      
-
-
+      <Header />
+      <div className="mx-3">
+        <Card />
+        <TableQr scannedCodes={[]} /> {/* Passando um array vazio como placeholder */}
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
