@@ -1,6 +1,5 @@
 // TableQr.tsx
 import React from 'react';
-import './TableQr.css'; // Importando estilos específicos para o TableQr
 import CodeData from './codedata';
 
 interface TableQrProps {
