@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Printer, Download, Copy } from 'lucide-react';
 import 'animate.css';
-import * as XLSX from 'xlsx'; // Importando a biblioteca xlsx
+import * as XLSX from 'xlsx'; // Importe a biblioteca xlsx
 
 interface Tooltip {
     id: string;
@@ -14,7 +14,11 @@ const tooltips: Tooltip[] = [
     { id: 'tooltip-copy', content: 'Copy' },
 ];
 
-const SpeedDial: React.FC<{ tableData: any[] }> = ({ tableData }) => {
+interface SpeedDialProps {
+    tableData: any[]; // Defina o tipo correto para seus dados da tabela
+}
+
+const SpeedDial: React.FC<SpeedDialProps> = ({ tableData }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const toggleMenu = () => {
@@ -22,10 +26,10 @@ const SpeedDial: React.FC<{ tableData: any[] }> = ({ tableData }) => {
     };
 
     const downloadTableAsExcel = () => {
-        const wb = XLSX.utils.book_new(); // Cria um novo livro Excel
-        const ws = XLSX.utils.json_to_sheet(tableData); // Converte os dados da tabela em uma planilha Excel
-        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // Adiciona a planilha ao livro Excel
-        XLSX.writeFile(wb, 'table_data.xlsx'); // Baixa o arquivo Excel
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(tableData);
+        XLSX.utils.book_append_sheet(wb, ws, 'QrCodes');
+        XLSX.writeFile(wb, 'GetQr-ScannedCodes.xlsx'); 
     };
 
     return (
@@ -88,4 +92,3 @@ const SpeedDial: React.FC<{ tableData: any[] }> = ({ tableData }) => {
 };
 
 export default SpeedDial;
-
