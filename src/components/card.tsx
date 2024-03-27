@@ -28,6 +28,7 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
                         date: new Date().toLocaleString(),
                     };
                     onScan(scannedCode);
+                    alert("Code scanned!")
                     codeReader.stopContinuousDecode();
                     setIsModalOpen(false);
                 }
@@ -64,10 +65,10 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
             {isModalOpen && (
                 <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-3 rounded-md">
-                        <div className="flex justify-end">
+                        <div className="flex justify-end p-2">
                             <button className="rounded-full bg-rose-700 text-zinc-200 p-1" onClick={closeModal}><X></X></button>
                         </div>
-                        <video ref={videoRef} autoPlay={true} playsInline={true}></video>
+                        <video className="pb-2" ref={videoRef} autoPlay={true} playsInline={true}></video>
                     </div>
                 </div>
             )}
