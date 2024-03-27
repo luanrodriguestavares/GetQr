@@ -7,15 +7,12 @@ interface TableQrProps {
 
 const TableQr: React.FC<TableQrProps> = ({ scannedCodes }) => {
     return (
-        <div className="max-w-full overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="mt-10 shadow-md sm:rounded-lg mx-auto">
             <table className="w-full text-sm text-left rtl:text-right text-zinc-500 dark:text-gray-400 divide-y divide-gray-200">
                 <thead className="bg-indigo-600 text-xs text-white uppercase">
                     <tr>
                         <th scope="col" className="px-6 py-3">
                             Code
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Value
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Date
