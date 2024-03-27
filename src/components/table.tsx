@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import CodeData from './codedata';
 
 interface TableQrProps {
     scannedCodes: CodeData[];
+    tableRef: RefObject<HTMLDivElement>; // Adicionando a propriedade tableRef
 }
 
-const TableQr: React.FC<TableQrProps> = ({ scannedCodes }) => {
+const TableQr: React.FC<TableQrProps> = ({ scannedCodes, tableRef }) => {
     return (
-        <div className="max-w-6xl mt-8 mx-auto">
+        <div ref={tableRef} className="max-w-6xl mt-8 mx-auto"> {/* Usando a referência da tabela */}
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-zinc-500 dark:text-gray-400">
                 <thead className="bg-indigo-600 text-xs text-white uppercase">
