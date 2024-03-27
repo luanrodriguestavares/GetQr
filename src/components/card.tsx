@@ -10,7 +10,7 @@ interface CodeData {
 }
 
 function Card() {
-    const [scannedCodes, setScannedCodes] = useState<CodeData[]>([]);
+    const [, setScannedCodes] = useState<CodeData[]>([]);
     const [result, setResult] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
