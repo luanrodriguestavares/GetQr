@@ -1,43 +1,31 @@
-// Card.tsx
-import { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Camera } from 'lucide-react';
 import { BrowserMultiFormatReader } from '@zxing/library';
+import CodeData from './codedata';
 
-interface CodeData {
-    code: string;
-    value: string;
-    date: string;
+interface CardProps {
+    onScan: (codeData: CodeData) => void; 
 }
 
-function Card() {
-    const [, setScannedCodes] = useState<CodeData[]>([]);
-    const [result, setResult] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const Card: React.FC<CardProps> = ({ onScan }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     const startScanner = () => {
-        setIsModalOpen(true);
-
         const codeReader = new BrowserMultiFormatReader();
         codeReader.decodeFromVideoDevice(null, videoRef.current!, (result, error) => {
             if (result) {
                 const scannedCode: CodeData = {
                     code: result.getText(),
-                    value: 'Valor', // Defina o valor conforme necessário
+                    value: 'Valor',
                     date: new Date().toLocaleString()
                 };
-                setScannedCodes(prevScannedCodes => [...prevScannedCodes, scannedCode]);
-                setResult(result.getText());
+                onScan(scannedCode); 
                 codeReader.stopContinuousDecode();
             }
             if (error) {
                 console.error(error);
             }
         });
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
     };
 
     return (
@@ -53,21 +41,7 @@ function Card() {
                         </button>
                     </div>
                 </div>
-
-                {result && (
-                    <p className="text-white text-center mt-4">QR Code scanned: {result}</p>
-                )}
             </div>
-
-            {isModalOpen && (
-                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-4 rounded-lg">
-                        {/* Exibir o preview da câmera dentro do modal */}
-                        <video ref={videoRef}></video>
-                        <button onClick={closeModal}>Close</button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
