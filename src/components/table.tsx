@@ -23,7 +23,6 @@ const TableQr: React.FC<TableQrProps> = ({ scannedCodes }) => {
                     {scannedCodes.map((codeData, index) => (
                         <tr key={index} className="hover:bg-gray-50">
                             <td className="px-6 py-4">{codeData.code}</td>
-                            <td className="px-6 py-4">{codeData.value}</td>
                             <td className="px-6 py-4">{codeData.date}</td>
                         </tr>
                     ))}
