@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Camera, Printer, Download, Copy } from 'lucide-react';
+import { Printer, Download, Copy } from 'lucide-react';
+import 'animate.css';
+import * as XLSX from 'xlsx'; // Importando a biblioteca xlsx
 
 interface Tooltip {
     id: string;
@@ -7,37 +9,44 @@ interface Tooltip {
 }
 
 const tooltips: Tooltip[] = [
-    { id: 'tooltip-share', content: 'Share' },
     { id: 'tooltip-print', content: 'Print' },
     { id: 'tooltip-download', content: 'Download' },
     { id: 'tooltip-copy', content: 'Copy' },
 ];
 
-const SpeedDial: React.FC = () => {
+const SpeedDial: React.FC<{ tableData: any[] }> = ({ tableData }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
+    const downloadTableAsExcel = () => {
+        const wb = XLSX.utils.book_new(); // Cria um novo livro Excel
+        const ws = XLSX.utils.json_to_sheet(tableData); // Converte os dados da tabela em uma planilha Excel
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // Adiciona a planilha ao livro Excel
+        XLSX.writeFile(wb, 'table_data.xlsx'); // Baixa o arquivo Excel
+    };
+
     return (
         <div className="fixed bottom-6 right-6">
             {isOpen && (
                 <div
-                    className="fixed inset-0 bg-black opacity-80 z-40"
+                    className="fixed inset-0 bg-black opacity-50 z-1"
                     onClick={toggleMenu}
                 />
             )}
-            <div className={`flex flex-col items-center mb-4 space-y-2 ${isOpen ? '' : 'hidden'}`}>
+            <div className={`flex flex-col items-center mb-4 space-y-2 ${isOpen ? '' : 'hidden'} animate__animated animate__fadeIn`} style={{ transition: 'opacity 0.3s ease' }}>
                 {tooltips.map(({ id, content }) => (
                     <React.Fragment key={id}>
                         <button
                             type="button"
                             data-tooltip-target={id}
                             data-tooltip-placement="left"
-                            className="flex justify-center items-center w-14 h-14 text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 z-50"
+                            className="z-10 flex justify-center items-center w-14 h-14 text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 animate__animated animate__fadeIn"
+                            style={{ opacity: isOpen ? 1 : 0 }}
+                            onClick={id === 'tooltip-download' ? downloadTableAsExcel : undefined}
                         >
-                            {id === 'tooltip-share' && <Camera className="w-5 h-5" />}
                             {id === 'tooltip-print' && <Printer className="w-5 h-5" />}
                             {id === 'tooltip-download' && <Download className="w-5 h-5" />}
                             {id === 'tooltip-copy' && <Copy className="w-5 h-5" />}
@@ -59,14 +68,16 @@ const SpeedDial: React.FC = () => {
                 onClick={toggleMenu}
                 aria-controls="speed-dial-menu-default"
                 aria-expanded={isOpen}
-                className="flex items-center justify-center w-14 h-14 text-white bg-indigo-700 rounded-full hover:bg-indigo-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 focus:outline-none dark:focus:ring-indigo-800 z-50"
+                className="flex items-center justify-center w-14 h-14 text-white bg-indigo-600 rounded-full hover:bg-indigo-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 focus:outline-none dark:focus:ring-indigo-800 z-10 animate__animated animate__fadeIn"
+                style={{ transition: 'transform 0.3s ease' }}
             >
                 <svg
-                    className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-45' : ''}`}
+                    className={`w-5 h-5 ${isOpen ? 'rotate-45' : ''}`}
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 18 18"
+                    style={{ transition: 'transform 0.3s ease' }}
                 >
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16" />
                 </svg>
@@ -77,3 +88,4 @@ const SpeedDial: React.FC = () => {
 };
 
 export default SpeedDial;
+
