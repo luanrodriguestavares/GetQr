@@ -1,21 +1,24 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Camera, X } from 'lucide-react';
-import { BrowserMultiFormatReader } from '@zxing/library';
+import { Camera, X, QrCode } from 'lucide-react';
 import CodeData from './codedata';
+import { BrowserMultiFormatReader } from '@zxing/library';
 
 interface CardProps {
     onScan: (codeData: CodeData) => void;
 }
 
 const Card: React.FC<CardProps> = ({ onScan }) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isScanModalOpen, setIsScanModalOpen] = useState(false);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [qrText, setQrText] = useState('');
+    const [qrCodeUrl, setQrCodeUrl] = useState('');
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
-        if (isModalOpen) {
+        if (isScanModalOpen) {
             startScanner();
         }
-    }, [isModalOpen]);
+    }, [isScanModalOpen]);
 
     const startScanner = () => {
         if (videoRef.current) {
@@ -30,7 +33,7 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
                     onScan(scannedCode);
                     alert("Code scanned!")
                     codeReader.stopContinuousDecode();
-                    setIsModalOpen(false);
+                    setIsScanModalOpen(false);
                 }
                 if (error) {
                     console.error(error);
@@ -39,12 +42,26 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
         }
     };
 
-    const openModal = () => {
-        setIsModalOpen(true);
+    const openScanModal = () => {
+        setIsScanModalOpen(true);
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
+    const closeScanModal = () => {
+        setIsScanModalOpen(false);
+    };
+
+    const openCreateModal = () => {
+        setIsCreateModalOpen(true);
+    };
+
+    const closeCreateModal = () => {
+        setIsCreateModalOpen(false);
+    };
+
+    const createQRCode = () => {
+        // Construindo a URL do QR Code com base no qrText
+        const qrCodeUrl = `https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=${encodeURIComponent(qrText)}`;
+        setQrCodeUrl(qrCodeUrl);
     };
 
     return (
@@ -54,21 +71,39 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
                 <p className="text-indigo-200 text-xs xl:text-lg mb-10 text-center">Maximizing QR Data Recovery with Ease</p>
                 <div className="flex justify-center">
                     <div className="flex items-center">
-                        <button type="button" onClick={openModal} className="flex items-center text-gray-900 bg-indigo-50 focus:outline-none transition-transform duration-300 hover:scale-110 focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-2.5">
+                        <button type="button" onClick={openScanModal} className="flex items-center text-gray-900 bg-indigo-50 focus:outline-none transition-transform duration-300 hover:scale-110 focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-2.5">
                             <Camera className="mr-2" />
                             Scan
+                        </button>
+                        <span className='mx-4 text-indigo-200'>or</span>
+                        <button type="button" onClick={openCreateModal} className="flex items-center text-gray-900 bg-indigo-50 focus:outline-none transition-transform duration-300 hover:scale-110 focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-2.5">
+                            <QrCode className="mr-2" />
+                            Create
                         </button>
                     </div>
                 </div>
             </div>
 
-            {isModalOpen && (
+            {isScanModalOpen && (
                 <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-3 rounded-md">
                         <div className="flex justify-end p-2">
-                            <button className="rounded-full bg-rose-700 hover:bg-rose-800 text-zinc-200 p-1" onClick={closeModal}><X></X></button>
+                            <button className="rounded-full bg-rose-700 hover:bg-rose-800 text-zinc-200 p-1" onClick={closeScanModal}><X /></button>
                         </div>
                         <video className="pb-2" ref={videoRef} autoPlay={true} playsInline={true}></video>
+                    </div>
+                </div>
+            )}
+
+            {isCreateModalOpen && (
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white p-3 rounded-md">
+                        <div className="flex justify-end p-2">
+                            <button className="rounded-full bg-rose-700 hover:bg-rose-800 text-zinc-200 p-1" onClick={closeCreateModal}><X /></button>
+                        </div>
+                        <input type="text" value={qrText} onChange={(e) => setQrText(e.target.value)} placeholder="Enter QR Code Text" className="border-2 border-gray-400 p-2 mb-4 w-full" />
+                        <button className="bg-indigo-600 text-white py-2 px-4 rounded-md mb-4" onClick={createQRCode}>Create QR Code</button>
+                        {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="mx-auto" />}
                     </div>
                 </div>
             )}
