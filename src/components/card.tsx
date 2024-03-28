@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Camera, X, QrCode } from 'lucide-react';
-import CodeData from './codedata';
 import { BrowserMultiFormatReader } from '@zxing/library';
+import CodeData from './codedata';
 
 interface CardProps {
     onScan: (codeData: CodeData) => void;
@@ -13,6 +13,7 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
     const [qrText, setQrText] = useState('');
     const [qrCodeUrl, setQrCodeUrl] = useState('');
     const videoRef = useRef<HTMLVideoElement>(null);
+    const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
 
     useEffect(() => {
         if (isScanModalOpen) {
@@ -22,8 +23,8 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
 
     const startScanner = () => {
         if (videoRef.current) {
-            const codeReader = new BrowserMultiFormatReader();
-            codeReader.decodeFromVideoDevice(null, videoRef.current, (result, error) => {
+            codeReaderRef.current = new BrowserMultiFormatReader(); // Initialize code reader
+            codeReaderRef.current.decodeFromVideoDevice(null, videoRef.current, (result, error) => {
                 if (result) {
                     const scannedCode: CodeData = {
                         code: result.getText(),
@@ -32,8 +33,6 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
                     };
                     onScan(scannedCode);
                     alert("Code scanned!")
-                    codeReader.stopContinuousDecode();
-                    setIsScanModalOpen(false);
                 }
                 if (error) {
                     console.error(error);
@@ -48,6 +47,7 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
 
     const closeScanModal = () => {
         setIsScanModalOpen(false);
+        codeReaderRef.current?.reset(); // Reset code reader when modal is closed
     };
 
     const openCreateModal = () => {
@@ -59,9 +59,20 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
     };
 
     const createQRCode = () => {
-        // Construindo a URL do QR Code com base no qrText
-        const qrCodeUrl = `https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=${encodeURIComponent(qrText)}`;
-        setQrCodeUrl(qrCodeUrl);
+        // Chamada para a API do Google para criar o QR Code
+        fetch(`https://chart.googleapis.com/chart?cht=qr&chl=${qrText}&chs=300x300&chld=L|0`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to create QR Code');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                setQrCodeUrl(URL.createObjectURL(blob));
+            })
+            .catch(error => {
+                console.error('Error creating QR Code:', error);
+            });
     };
 
     return (
