@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Camera, X, QrCode } from 'lucide-react';
+import { Camera, X, QrCode, Download } from 'lucide-react';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import CodeData from './codedata';
 
@@ -98,25 +98,37 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
             {isScanModalOpen && (
                 <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-3 rounded-md">
-                        <div className="flex justify-end p-2">
-                            <button className="rounded-full bg-rose-700 hover:bg-rose-800 text-zinc-200 p-1" onClick={closeScanModal}><X /></button>
-                        </div>
+                    <div className="flex justify-between items-center p-2">
+                        <span className="rounded-md text-md font-medium text-indigo-600"><Camera className='inline mr-2'></Camera>Scanner</span>
+                        <button className="rounded-full bg-rose-700 hover:bg-rose-800 text-zinc-200 p-1" onClick={closeScanModal}><X /></button>
+                    </div>
                         <video className="pb-2" ref={videoRef} autoPlay={true} playsInline={true}></video>
                     </div>
                 </div>
             )}
 
-            {isCreateModalOpen && (
-                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white p-3 rounded-md">
-                        <div className="flex justify-end p-2">
-                            <button className="rounded-full bg-rose-700 hover:bg-rose-800 text-zinc-200 p-1" onClick={closeCreateModal}><X /></button>
-                        </div>
-                        <input type="text" value={qrText} onChange={(e) => setQrText(e.target.value)} placeholder="Enter QR Code Text" className="border-2 border-gray-400 p-2 mb-4 w-full" />
-                        <button className="bg-indigo-600 text-white py-2 px-4 rounded-md mb-4" onClick={createQRCode}>Create QR Code</button>
-                        {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="mx-auto" />}
+        {isCreateModalOpen && (
+            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <div className="bg-white p-3 rounded-md">
+                    <div className="flex justify-between items-center p-2">
+                        <span className="rounded-md text-md font-medium text-indigo-600"><QrCode className='inline mr-2'></QrCode>Create</span>
+                        <button className="rounded-full bg-rose-700 hover:bg-rose-800 text-zinc-200 p-1" onClick={closeCreateModal}><X /></button>
                     </div>
+                    <div className="mt-4 mb-3">
+                        <label className="">Enter QR code text:</label>
+                        <input id="inputQr" type="text" value={qrText} onChange={(e) => setQrText(e.target.value)} className="border-2 border-gray-400 p-2 mb-4 w-full" />
+                    </div>
+                    <button className="bg-indigo-600 text-white py-2 px-4 rounded-md mb-4 hover:bg-indigo-700" onClick={createQRCode}>Create QR Code</button>
+                    {qrCodeUrl && (
+                        <div className="flex items-center justify-center flex-col">
+                            <img src={qrCodeUrl} alt="QR Code" className="mx-auto mb-4" />
+                            <a href={qrCodeUrl} download="qr_code.png" className="text-indigo-600 hover:text-indigo-700 font-medium">
+                                <Download className="inline mr-1"></Download>Download QR code
+                            </a>
+                        </div>
+                    )}
                 </div>
+            </div>
             )}
         </div>
     );
