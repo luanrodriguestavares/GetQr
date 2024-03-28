@@ -37,10 +37,13 @@ const SpeedDial: React.FC<SpeedDialProps> = ({ tableData, tableRef }) => {
         if (tableRef.current) {
             const pdf = new jsPDF();
             pdf.text('GetQR - Scanned Codes', 10, 10);
-            tableData.forEach((row, index) => {
-                Object.keys(row).forEach((key, columnIndex) => {
-                    pdf.text(`${key}: ${row[key]}`, 10, 20 + index * 10 + columnIndex * 5);
+            let y = 20;
+            tableData.forEach((row) => {
+                Object.keys(row).forEach((key) => {
+                    pdf.text(`${key}: ${row[key]}`, 10, y);
+                    y += 10; 
                 });
+                y += 10; 
             });
             pdf.save('table.pdf');
         } else {
