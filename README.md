@@ -15,7 +15,7 @@ Para o desenvolvimento da plataforma, utilizamos as seguintes tecnologias:
 - React Js
 - CSS (Tailwind)
 - Typescript
-- 
+  
 ## Como Usar
 
 Para acessar a plataforma, visite: https://get-qrcode.netlify.app/
