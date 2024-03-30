@@ -1,0 +1,25 @@
+{
+  "background_color": "#ffffff",
+  "description": "Scan and save QR codes to Excel or PDF effortlessly.",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "GetQR",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "GetQR",
+  "start_url": "https://get-qrcode.netlify.app/",
+  "theme_color": "#4F46E5",
+  "icons": [
+    {
+      "src": "/assets/GetQrIcon-D0QEI5A5.png",
+      "type": "image/png",
+      "sizes": "760x760"
+    }
+  ],
+  "id": "GetQR-Generate and Scan",
+  "lang": "en",
+  "categories": [
+    "productivity",
+    "utilities"
+  ]
+}
