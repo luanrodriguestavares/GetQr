@@ -59,8 +59,7 @@ const Card: React.FC<CardProps> = ({ onScan }) => {
     };
 
     const createQRCode = () => {
-        // Chamada para a API do Google para criar o QR Code
-        fetch(`https://chart.googleapis.com/chart?cht=qr&chl=${qrText}&chs=300x300&chld=L|0`)
+        fetch(`https://qr-code-generator-prbp.onrender.com/generate?text=${encodeURIComponent(qrText)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to create QR Code');
